@@ -1,16 +1,17 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import cors from 'cors';
+
+
+import userRoutes from '../routes/userRoutes';
+import { authenticateUser } from '../middleware/authMiddleware';
 
 const app = express();
 const port = 3100;
 
-app.get("/", (req: Request, res: Response) => {
+app.use(cors());
+app.use(express.json());
 
-    const response = {
-        message: "Hi"
-    }
-
-  res.json(response);
-});
+app.use('/api', authenticateUser, userRoutes);
 
 app.listen(port, () => {
   console.log(`app listening at http://localhost:${port}`);
